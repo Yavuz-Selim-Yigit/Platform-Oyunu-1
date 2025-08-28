@@ -23,6 +23,12 @@ public class PlayerHareketController : MonoBehaviour
     #endregion
 
 
+    #region Animasyon
+    [Header("Animasyon Ayarlarý")]
+    [SerializeField]
+    Animator anim;// Animatör bileþeni
+    #endregion
+
 
     #region Hareket
 
@@ -47,6 +53,9 @@ public class PlayerHareketController : MonoBehaviour
     {
         HareketEt();
         Ziplama();
+
+        anim.SetBool("zemindeMi", zemindeMi); // Animasyona zeminde olup olmadýðýný bildir
+        anim.SetFloat("hareketHizi", Mathf.Abs(rb.linearVelocity.x)); // Animasyona yatay hýzý bildir
     }
 
 
@@ -66,7 +75,7 @@ public class PlayerHareketController : MonoBehaviour
 
         if (Input.GetButtonDown("Jump") && (zemindeMi || ikinciZiplama))
         {
-            if(zemindeMi)
+            if (zemindeMi)
             {
                 ikinciZiplama = true; // Havada olduðunu iþaretle
             }
@@ -74,12 +83,16 @@ public class PlayerHareketController : MonoBehaviour
             {
                 ikinciZiplama = false; // Ýkinci zýplamadan sonra havada olmadýðýný iþaretle
             }
-
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, ziplamaGucu);
+            
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, ziplamaGucu); // Zýplama hareketi
+            
         }
 
-        
+
+       
+
     }
     #endregion
+
 
 }
