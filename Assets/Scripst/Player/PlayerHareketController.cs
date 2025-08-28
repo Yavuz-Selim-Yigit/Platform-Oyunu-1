@@ -65,6 +65,14 @@ public class PlayerHareketController : MonoBehaviour
         float h = Input.GetAxis("Horizontal");// Yatay eksende hareket giriþi
         rb.linearVelocity = new Vector2(h * hareketHizi, rb.linearVelocity.y); // Yatay hareket
 
+        if (rb.linearVelocity.x < 0)
+        {
+            transform.localScale = new Vector3(-1, 1, 1); // Sol yöne bak
+        }
+        else if (rb.linearVelocity.x > 0)
+        {
+            transform.localScale = new Vector3(1, 1, 1); // Sað yöne bak
+        }
     }
     #endregion
 
@@ -83,13 +91,13 @@ public class PlayerHareketController : MonoBehaviour
             {
                 ikinciZiplama = false; // Ýkinci zýplamadan sonra havada olmadýðýný iþaretle
             }
-            
+
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, ziplamaGucu); // Zýplama hareketi
-            
+
         }
 
 
-       
+
 
     }
     #endregion
