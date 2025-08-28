@@ -1,11 +1,41 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerHareketController : MonoBehaviour
 {
+    #region Deðiþkenler
     Rigidbody2D rb;// Rigidbody2D bileþeni
 
-    public float hareketHizi; // Player hareket hýzý
+
+    #region zemin kontrolü && zýplama
+    [Header("Zýplama Ayarlarý")]
+
     public float ziplamaGucu; // Player zýplama gücü
+    [SerializeField]// zemin kontrolü için
+    Transform zeminKontrolNoktasi; // Zemin kontrol noktasý
+
+    bool zemindeMi; // Player zeminde mi?
+    bool ikinciZiplama; // Player havada mý?
+
+    public LayerMask zeminMaske;// Zemin katmaný
+
+    #endregion
+
+
+
+    #region Hareket
+
+    [Header("Hareket Ayarlarý")]
+    public float hareketHizi; // Player hareket hýzý
+
+    #endregion
+
+
+
+    #endregion
+
+
 
 
     private void Awake()
@@ -16,12 +46,40 @@ public class PlayerHareketController : MonoBehaviour
     private void Update()
     {
         HareketEt();
+        Ziplama();
     }
 
+
+    #region Yatay Hareket
     void HareketEt()
     {
         float h = Input.GetAxis("Horizontal");// Yatay eksende hareket giriþi
         rb.linearVelocity = new Vector2(h * hareketHizi, rb.linearVelocity.y); // Yatay hareket
 
     }
+    #endregion
+
+    #region Zýplama
+    void Ziplama()
+    {
+        zemindeMi = Physics2D.OverlapCircle(zeminKontrolNoktasi.position, .2f, zeminMaske);
+
+        if (Input.GetButtonDown("Jump") && (zemindeMi || ikinciZiplama))
+        {
+            if(zemindeMi)
+            {
+                ikinciZiplama = true; // Havada olduðunu iþaretle
+            }
+            else
+            {
+                ikinciZiplama = false; // Ýkinci zýplamadan sonra havada olmadýðýný iþaretle
+            }
+
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, ziplamaGucu);
+        }
+
+        
+    }
+    #endregion
+
 }
